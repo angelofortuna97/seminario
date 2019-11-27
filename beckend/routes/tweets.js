@@ -9,7 +9,9 @@ const { checkValidation } = require('../middlewares/validation');
 
 
 router.get('/', function(req, res, next) {
-  Tweet.find().populate("_author", "-password").exec(function(err, tweets){
+  Tweet.find({
+    _parent: null})
+    .populate("_author", "-password").exec(function(err, tweets){
     if (err) return res.status(500).json({error: err});
     res.json(tweets);
   });
@@ -25,11 +27,21 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+router.get('/:id/comments', function(req, res, next) {
+  Tweet.find({_parent: req.params.id})
+    .populate("_author", "-password")
+    .exec(function(err, tweets){
+      if (err) return res.status(500).json({error: err});
+      res.json(tweets);
+    });
+});
+
 router.post('/',autenticationMiddleware.isAuth, [
   check('tweet').isString().isLength({min: 1, max: 120})
 ], checkValidation, function(req, res, next) {
   const newTweet = new Tweet(req.body);
   newTweet._author = res.locals.authInfo.userId;
+  newTweet._parent = req.body.parent;
   newTweet.save(function(err){
     if(err) {
       return res.status(500).json({error: err});
