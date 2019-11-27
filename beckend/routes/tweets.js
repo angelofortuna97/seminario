@@ -41,8 +41,6 @@ router.post('/',autenticationMiddleware.isAuth, [
 ], checkValidation, function(req, res, next) {
   const newTweet = new Tweet(req.body);
   newTweet._author = res.locals.authInfo.userId;
-  newTweet._parent = req.body.parent;
-  newTweet._likes = [];
   newTweet.count_likes = 0;
   newTweet.save(function(err){
     if(err) {
