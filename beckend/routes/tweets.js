@@ -42,6 +42,8 @@ router.post('/',autenticationMiddleware.isAuth, [
   const newTweet = new Tweet(req.body);
   newTweet._author = res.locals.authInfo.userId;
   newTweet._parent = req.body.parent;
+  newTweet._likes = [];
+  newTweet.count_likes = 0;
   newTweet.save(function(err){
     if(err) {
       return res.status(500).json({error: err});
@@ -106,5 +108,65 @@ router.delete('/:id', autenticationMiddleware.isAuth, function(req, res, next) {
     });
   });
 });
+
+router.put('/:id/like', autenticationMiddleware.isAuth, function(req, res, next){
+  Tweet.findOne({_id: req.params.id}).exec(function(err, tweet) {
+    if (err) {
+      return res.status(500).json({
+        error: err,
+        message: "Error reading the tweet"
+      });
+    }
+    if (!tweet) {
+      return res.status(404).json({
+        message: "Tweet not found"
+      })
+    }
+   
+    tweet._likes.forEach(user => {
+      if (user == res.locals.authInfo.userId){
+        return res.status(404).json({
+        message: "Like exists"
+        });
+      }
+    });
+    tweet._likes.push(res.locals.authInfo.userId);
+    tweet.count_likes += 1;
+    tweet.save(function(err) {
+      if(err) return res.status(500).json({error: err});
+      res.json(tweet);
+    });
+  })
+})
+
+router.delete('/:id/like', autenticationMiddleware.isAuth, function(req, res, next){
+  Tweet.findOne({_id: req.params.id}).exec(function(err, tweet) {
+    if (err) {
+      return res.status(500).json({
+        error: err,
+        message: "Error reading the tweet"
+      });
+    }
+    if (!tweet) {
+      return res.status(404).json({
+        message: "Tweet not found"
+      })
+    }
+   
+    tweet._likes.forEach(user => {
+      if (user != res.locals.authInfo.userId){
+        return res.status(404).json({
+        message: "Like doesn't exist"
+        });
+      }
+    });
+    tweet._likes.remove(res.locals.authInfo.userId);
+    tweet.count_likes -= 1;
+    tweet.remove(function(err) {
+      if(err) return res.status(500).json({error: err});
+      res.json(tweet);
+    });
+  })
+})
 
 module.exports = router;
