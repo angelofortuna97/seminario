@@ -9,10 +9,10 @@
   <ion-list>
 
     <ion-item-sliding *ngFor="let tweet of tweets">
-
       <ion-item>
         <ion-label>
           <h2>{{tweet.tweet}}</h2>
+          <p>{{tweet._parent}}</p>
   
           <p *ngIf="tweet._author; else userDeleted" class="user" [class.me]="canEdit(tweet)">
             {{ getAuthor(tweet) }} 
@@ -24,7 +24,7 @@
   
         </ion-label>
         <ion-note slot="end">{{ tweet.created_at | unictDate: 1 }}</ion-note>
-        <ion-button slot="end" id="button_comment" shape="round" (click)="createOrEditTweet(2)"><ion-icon name="text"></ion-icon></ion-button>
+        <ion-button slot="end" id="button_comment" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id)"><ion-icon name="text"></ion-icon></ion-button>
       </ion-item>
   
       <ion-item-options *ngIf="canEdit(tweet)" side="end">

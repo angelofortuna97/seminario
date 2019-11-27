@@ -40,7 +40,11 @@ router.post('/',autenticationMiddleware.isAuth, [
   check('tweet').isString().isLength({min: 1, max: 120})
 ], checkValidation, function(req, res, next) {
   const newTweet = new Tweet(req.body);
+  
   newTweet._author = res.locals.authInfo.userId;
+  newTweet._parent = req.body._parent;
+  newTweet._likes = [];
+
   newTweet.count_likes = 0;
   newTweet.save(function(err){
     if(err) {

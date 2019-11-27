@@ -9,6 +9,8 @@ import { AuthService } from '../auth/auth.service';
 })
 export class TweetsService {
 
+  comments = {} as Tweet;
+
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({
@@ -25,6 +27,33 @@ export class TweetsService {
   async createTweet(newTweet: NewTweet) {
     const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);
     return this.http.post<Tweet>(`${environment.API_URL}/tweets/`, newTweet, {
+      headers: headerOptions
+    }).toPromise();
+  }
+
+  //COMMENT
+  async commentTweet(newTweet: NewTweet, parent: String) {
+
+    this.comments.tweet = newTweet.tweet;
+    this.comments._parent = parent;
+
+    // let comment = JSON.stringify(newTweet);
+    // let parentID = JSON.stringify(parent);
+
+    // console.log("comment: " + comment);
+    // console.log("parentID: " + parentID);
+    
+    // console.log("prova: " + newTweet.tweet);
+
+    // let json = `{"tweet": "${newTweet.tweet}", "parent": "${parent}"}`;
+
+    // console.log("json: " + json);
+
+    console.log("tweet: " + JSON.stringify(newTweet));
+    console.log("comments: " + JSON.stringify(this.comments));
+
+    const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);
+    return this.http.post<Tweet>(`${environment.API_URL}/tweets/`, this.comments, {
       headers: headerOptions
     }).toPromise();
   }

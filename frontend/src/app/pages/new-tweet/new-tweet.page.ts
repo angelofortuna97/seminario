@@ -19,6 +19,8 @@ export class NewTweetPage implements OnInit {
   title = "New tweet";
   type: Number;
 
+  parentId: String;
+
   tweetToEdit: Tweet;
 
   editMode = false;
@@ -37,6 +39,7 @@ export class NewTweetPage implements OnInit {
     console.log(this.navParams.get("type"));
     this.type = this.navParams.get("type");
     this.editMode = this.tweetToEdit !== undefined;
+    this.parentId = this.navParams.get("tweetId");
 
     if(this.type == 1){ //type == 1 new Tweet
       this.title = "New tweet";
@@ -75,7 +78,12 @@ export class NewTweetPage implements OnInit {
       } else {
 
         // Chiamo la createTweet se l'utente sta creando un nuovo tweet
-        await this.tweetsService.createTweet(this.newTweet);
+        if(this.type == 2){
+          console.log("parentID: " + this.parentId);
+          await this.tweetsService.commentTweet(this.newTweet, this.parentId);
+        }
+        else
+          await this.tweetsService.createTweet(this.newTweet);
       }
 
       // Chiudo la modal

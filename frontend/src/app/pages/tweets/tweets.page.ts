@@ -57,7 +57,7 @@ export class TweetsPage implements OnInit {
 
   }
 
-  async createOrEditTweet(type?: number, tweet?: Tweet) {
+  async createOrEditTweet(type?: number, tweet?: Tweet, tweetId?: string) {
 
     /*
         Creo una modal (assegnandola ad una variabile)
@@ -65,13 +65,15 @@ export class TweetsPage implements OnInit {
         */
        console.log("type "+ type);
        console.log("tweet "+ tweet);
+       console.log("tweetId: " + tweetId);
     const modal = await this.modalCtrl.create({
-      component: NewTweetPage,
+      component: NewTweetPage,  
 
 
       componentProps: {
         type,
-        tweet
+        tweet,
+        tweetId
       } // Passo il parametro tweet. Se non disponibile, rimane undefined.
     });
 
