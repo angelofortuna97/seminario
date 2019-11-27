@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { NewTweet, Tweet } from 'src/app/interfaces/tweet';
 import { TweetsService } from 'src/app/services/tweets/tweets.service';
 import { ToastService } from 'src/app/shared/toast.service';
 import { ToastTypes } from 'src/app/enums/toast-types.enum';
 import { UniLoaderService } from 'src/app/shared/uniLoader.service';
+import { type } from 'os';
 
 @Component({
   selector: 'app-new-tweet',
@@ -14,6 +15,9 @@ import { UniLoaderService } from 'src/app/shared/uniLoader.service';
 export class NewTweetPage implements OnInit {
 
   newTweet = {} as NewTweet;
+
+  title = "New tweet";
+  type: Number;
 
   tweetToEdit: Tweet;
 
@@ -28,12 +32,25 @@ export class NewTweetPage implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.tweetToEdit = this.navParams.get('tweet');
+    console.log(this.navParams.get("type"));
+    this.type = this.navParams.get("type");
+    this.editMode = this.tweetToEdit !== undefined;
+
+    if(this.type == 1){ //type == 1 new Tweet
+      this.title = "New tweet";
+    }else if(this.type == 2){
+      this.title = "New comment";
+    } else{
+      this.title = "Edit comment";
+    } 
+
     /*
         Importo il parametro Tweet se acceddo alla modale per MODIFICARE
         Nel caso di accesso alla modal per createReadStream, la mia variabile sarà undefined
     */
-    this.tweetToEdit = this.navParams.get('tweet');
-    this.editMode = this.tweetToEdit !== undefined;
+
 
   }
 

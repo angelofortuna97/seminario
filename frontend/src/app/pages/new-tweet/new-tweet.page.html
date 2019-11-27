@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>new-tweet</ion-title>
+    <ion-title>{{title}}</ion-title>
   <ion-buttons slot="end">
     <ion-button color="dark" (click)="dismiss()">
       <ion-icon slot="icon-only" name="close"></ion-icon>
@@ -26,6 +26,6 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button expand="full" [disabled]="isDataInvalid()" (click)="createOrEditTweet()">Tweet</ion-button>
+    <ion-button expand="full" [disabled]="isDataInvalid()" (click)="createOrEditTweet(2)">Tweet</ion-button>
   </ion-toolbar>
 </ion-footer>

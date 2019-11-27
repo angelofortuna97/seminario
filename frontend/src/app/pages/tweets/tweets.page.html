@@ -24,10 +24,11 @@
   
         </ion-label>
         <ion-note slot="end">{{ tweet.created_at | unictDate: 1 }}</ion-note>
+        <ion-button slot="end" id="button_comment" shape="round" (click)="createOrEditTweet(2)"><ion-icon name="text"></ion-icon></ion-button>
       </ion-item>
   
       <ion-item-options *ngIf="canEdit(tweet)" side="end">
-        <ion-item-option color="secondary" (click)="createOrEditTweet(tweet)">
+        <ion-item-option color="secondary" (click)="createOrEditTweet(3, tweet)">
           <ion-icon slot="icon-only" name="create"></ion-icon>
         </ion-item-option>
         <ion-item-option color="danger" (click)="deleteTweet(tweet)">
@@ -39,7 +40,7 @@
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="createOrEditTweet()">
+    <ion-fab-button (click)="createOrEditTweet(1)">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
