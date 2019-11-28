@@ -50,9 +50,11 @@ router.post('/',autenticationMiddleware.isAuth, [
   newTweet._parent = req.body._parent;
   newTweet._likes = [];
 
-  hashtags.forEach(hashtag => {
+  if (hashtags != null){
+    hashtags.forEach(hashtag => {
     newTweet.hashtags.push(hashtag);
-  });
+    });
+  }
 
   newTweet.count_likes = 0;
   newTweet.save(function(err){
