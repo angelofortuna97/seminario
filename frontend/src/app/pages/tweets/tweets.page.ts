@@ -16,6 +16,9 @@ import { ToastTypes } from 'src/app/enums/toast-types.enum';
 export class TweetsPage implements OnInit {
 
   tweets: Tweet[] = [];
+  comments: Tweet[] = [];
+
+  selectedIndex: number = null;
 
   constructor(
     private tweetsService: TweetsService,
@@ -31,6 +34,8 @@ export class TweetsPage implements OnInit {
     await this.getTweets();
 
   }
+
+
 
   async getTweets() {
 
@@ -56,6 +61,39 @@ export class TweetsPage implements OnInit {
     }
 
   }
+
+
+  async getComment(id: string, index: number) {
+
+    if(this.selectedIndex == index)
+      this.selectedIndex = null;
+    else this.selectedIndex = index;
+
+    try {
+
+      // Avvio il loader
+      await this.uniLoader.show();
+
+      // Popolo il mio array di oggetti 'Tweet' con quanto restituito dalla chiamata API
+      this.comments = await this.tweetsService.getComments(id);
+
+      console.log(JSON.stringify(this.comments));
+
+      // La chiamata è andata a buon fine, dunque rimuovo il loader
+      await this.uniLoader.dismiss();
+
+    } catch (err) {
+
+      // Nel caso la chiamata vada in errore, mostro l'errore in un toast
+      await this.toastService.show({
+        message: err.message,
+        type: ToastTypes.ERROR
+      });
+
+    }
+
+  }
+
 
   async createOrEditTweet(type?: number, tweet?: Tweet, tweetId?: string) {
 

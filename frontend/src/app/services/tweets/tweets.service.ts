@@ -10,6 +10,7 @@ import { AuthService } from '../auth/auth.service';
 export class TweetsService {
 
   comments = {} as Tweet;
+  active: boolean = false;
 
   // Http Options
   httpOptions = {
@@ -37,18 +38,6 @@ export class TweetsService {
     this.comments.tweet = newTweet.tweet;
     this.comments._parent = parent;
 
-    // let comment = JSON.stringify(newTweet);
-    // let parentID = JSON.stringify(parent);
-
-    // console.log("comment: " + comment);
-    // console.log("parentID: " + parentID);
-    
-    // console.log("prova: " + newTweet.tweet);
-
-    // let json = `{"tweet": "${newTweet.tweet}", "parent": "${parent}"}`;
-
-    // console.log("json: " + json);
-
     console.log("tweet: " + JSON.stringify(newTweet));
     console.log("comments: " + JSON.stringify(this.comments));
 
@@ -61,6 +50,11 @@ export class TweetsService {
   // READ
   async getTweets() {
     return this.http.get<Tweet[]>(`${environment.API_URL}/tweets`).toPromise();
+  }
+
+  // READ
+  async getComments(id: string) {
+    return this.http.get<Tweet[]>(`${environment.API_URL}/tweets/${id}/comments`).toPromise();
   }
 
   // UPDATE
