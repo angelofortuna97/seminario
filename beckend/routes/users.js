@@ -88,4 +88,11 @@ router.delete('/:id', autenticationMiddleware.isAuth, function(req, res, next) {
     });
 });
 
+router.get('/favorites', autenticationMiddleware.isAuth, function(req, res, next) {
+  User.findOne({_id: res.locals.authInfo.userId}, function(err, user){
+    if (err) return res.status(500).json({error: err});
+    res.json(user._favorites);
+  });
+});
+
 module.exports = router;

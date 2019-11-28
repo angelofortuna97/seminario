@@ -6,7 +6,8 @@ const tweetSchema = mongoose.Schema({
     created_at: {type: Date, default: Date.now()},
     _parent: {type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Tweet'},
     _likes: {type: [mongoose.Schema.Types.ObjectId], ref: 'User'},
-    count_likes: Number
+    count_likes: Number,
+    _favorites: {type: [mongoose.Schema.Types.ObjectId], ref: 'User'},
 });
 
 const Tweet = mongoose.model('Tweet', tweetSchema);

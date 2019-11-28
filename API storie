@@ -22,4 +22,20 @@ PUT /tweets/:id/like
 rimuovere like da un tweet:
 DELETE /tweets/:id/like
 
+STORIA 3:
+
+aggiunti a entità User:
+_favorites      (array di objectId riferiti ai tweet preferiti dall'utente)
+
+aggiunti a entità Tweet:
+_favorites      (array di objectId riferiti agli utenti che hanno quel tweet tra i preferiti)
+
+ricavare lista di tweet preferiti dell'utente autenticato:
+GET /users/favorites
+
+aggiungere tweet ai preferiti:
+PUT /tweets/:id/favorite
+
+rimuovere tweet dai preferiti:
+DELETE /tweets/:id/favorite
 
