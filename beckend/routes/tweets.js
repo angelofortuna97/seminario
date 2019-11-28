@@ -304,16 +304,16 @@ router.delete('/:id/favorite', autenticationMiddleware.isAuth, function(req, res
     });
 });*/
 
-/*router.get('/search/:hashtag', function(req, res, next) {
+router.get('/search/:hashtag', function(req, res, next) {
   Tweet.find().exec(function(err, tweets){
-      if (err) return res.status(500).json({error: err});
+      if (err) return res.status(500).json({error: err});      
 
       var tweetsWithHashtag = [];
       var tmp;
+
       tweets.forEach(tweet => {
         tweet.hashtags.forEach(hashtag => {
-          tmp = "#" + req.params.hashtag.toString();
-          console.log(""+hashtag+ " "+tmp);
+          tmp = " #" + req.params.hashtag.toString();
           if (hashtag.toString() == tmp.toString() ){
             tweetsWithHashtag.push(tweet);
             return;
@@ -323,6 +323,6 @@ router.delete('/:id/favorite', autenticationMiddleware.isAuth, function(req, res
 
       res.json(tweetsWithHashtag);
     });
-});*/
+});
 
 module.exports = router;
