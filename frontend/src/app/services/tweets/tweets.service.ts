@@ -99,6 +99,14 @@ async addToFav(id: string){
   }).toPromise();
 }
 
+//DELETE FAVORITE
+async delFromFav(id: string){
+  const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);
+  return this.http.delete<any>(`${environment.API_URL}/tweets/${id}/favorite`, {
+    headers: headerOptions
+  }).toPromise();
+}
+
   //DELETE LIKE
   async deleteLike(tweet: Tweet){
     console.log(this.auth.me)

@@ -17,6 +17,7 @@ export class TweetsPage implements OnInit {
 
   tweets: Tweet[] = [];
   comments: Tweet[] = [];
+  showFavorite = false;
 
   selectedIndex: number = null;
 
@@ -62,6 +63,18 @@ export class TweetsPage implements OnInit {
 
   }
 
+  findFav(tweet: Tweet){
+    if(this.showFavorite){
+      if(tweet._favorites.length > 0) return true;
+      else return false;
+    }else{
+      return true;
+    }
+  }
+
+  setShowFavorite(){
+    this.showFavorite = !this.showFavorite;
+  }
 
   async getComment(id: string, index: number) {
 
@@ -201,20 +214,22 @@ export class TweetsPage implements OnInit {
 
   }
 
-  async addToFavorite(tweetId: string){
+  async addToFavorite(tweet: Tweet){
 
     // Mostro il loader
     await this.uniLoader.show();
 
-    console.log("tweetId: " + tweetId);
+    console.log("tweetId: " + tweet._id);
     
-    await this.tweetsService.addToFav(tweetId);
-
+    if(!this.checkFavorite(tweet))
+      await this.tweetsService.addToFav(tweet._id);
+    else await this.tweetsService.delFromFav(tweet._id);
     await this.uniLoader.dismiss();
 
     await this.getTweets();
-
   }
+
+  
 
   checkFavorite(tweet: Tweet){
     if(tweet._favorites.includes(this.auth.me._id)){
