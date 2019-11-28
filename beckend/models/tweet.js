@@ -8,6 +8,7 @@ const tweetSchema = mongoose.Schema({
     _likes: {type: [mongoose.Schema.Types.ObjectId], ref: 'User'},
     count_likes: Number,
     _favorites: {type: [mongoose.Schema.Types.ObjectId], ref: 'User'},
+    hashtags: {type: [String]}
 });
 
 const Tweet = mongoose.model('Tweet', tweetSchema);

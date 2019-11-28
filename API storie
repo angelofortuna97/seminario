@@ -39,3 +39,11 @@ PUT /tweets/:id/favorite
 rimuovere tweet dai preferiti:
 DELETE /tweets/:id/favorite
 
+STORIA 4:
+
+aggiunti a entità Tweet:
+hashtags        (array di stringhe)
+
+ricavare tutti i tweet che contengono l'hashtag
+GET /tweets/search/:hashtag
+(hashtag è una semplice stringa, da mandare senza #)

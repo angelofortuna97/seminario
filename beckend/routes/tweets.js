@@ -43,10 +43,16 @@ router.post('/',autenticationMiddleware.isAuth, [
   check('tweet').isString().isLength({min: 1, max: 120})
 ], checkValidation, function(req, res, next) {
   const newTweet = new Tweet(req.body);
+
+  const hashtags = newTweet.tweet.match(/(^|\s)(#[a-z\d-]+)/ig);
   
   newTweet._author = res.locals.authInfo.userId;
   newTweet._parent = req.body._parent;
   newTweet._likes = [];
+
+  hashtags.forEach(hashtag => {
+    newTweet.hashtags.push(hashtag);
+  });
 
   newTweet.count_likes = 0;
   newTweet.save(function(err){
@@ -289,5 +295,34 @@ router.delete('/:id/favorite', autenticationMiddleware.isAuth, function(req, res
     })
   })
 })
+
+/*router.get('/search/:hashtag', function(req, res, next) {
+  Tweet.find({hashtags: {'$all': ["#" + req.params.hashtag]}})
+  .exec(function(err, tweets){
+      if (err) return res.status(500).json({error: err});
+      res.json(tweets);
+    });
+});*/
+
+/*router.get('/search/:hashtag', function(req, res, next) {
+  Tweet.find().exec(function(err, tweets){
+      if (err) return res.status(500).json({error: err});
+
+      var tweetsWithHashtag = [];
+      var tmp;
+      tweets.forEach(tweet => {
+        tweet.hashtags.forEach(hashtag => {
+          tmp = "#" + req.params.hashtag.toString();
+          console.log(""+hashtag+ " "+tmp);
+          if (hashtag.toString() == tmp.toString() ){
+            tweetsWithHashtag.push(tweet);
+            return;
+          }
+        });
+      });
+
+      res.json(tweetsWithHashtag);
+    });
+});*/
 
 module.exports = router;
