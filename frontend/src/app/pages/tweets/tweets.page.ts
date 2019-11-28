@@ -17,6 +17,7 @@ export class TweetsPage implements OnInit {
 
   tweets: Tweet[] = [];
   comments: Tweet[] = [];
+  showFavorite = false;
 
   selectedIndex: number = null;
 
@@ -62,6 +63,18 @@ export class TweetsPage implements OnInit {
 
   }
 
+  findFav(tweet: Tweet){
+    if(this.showFavorite){
+      if(tweet._favorites.length > 0) return true;
+      else return false;
+    }else{
+      return true;
+    }
+  }
+
+  setShowFavorite(){
+    this.showFavorite = !this.showFavorite;
+  }
 
   async getComment(id: string, index: number) {
 
@@ -181,7 +194,7 @@ export class TweetsPage implements OnInit {
       
       //Aggiungo like se non presente
       else
-        await this.tweetsService.addLike(tweet);
+        await this.tweetsService.addLike(tweet._id);
      
       // Riaggiorno la mia lista di tweets
       await this.getTweets();
@@ -199,6 +212,33 @@ export class TweetsPage implements OnInit {
     // Chiudo il loader
     await this.uniLoader.dismiss();
 
+  }
+
+  async addToFavorite(tweet: Tweet){
+
+    // Mostro il loader
+    await this.uniLoader.show();
+
+    console.log("tweetId: " + tweet._id);
+    
+    if(!this.checkFavorite(tweet))
+      await this.tweetsService.addToFav(tweet._id);
+    else await this.tweetsService.delFromFav(tweet._id);
+    await this.uniLoader.dismiss();
+
+    await this.getTweets();
+  }
+
+  
+
+  checkFavorite(tweet: Tweet){
+    if(tweet._favorites.includes(this.auth.me._id)){
+      return true;
+    }
+    return false;
+    //   console.log("CheckFavorite: " + tweet._favorites.includes(this.auth.me._id) + " tweet: " + tweet.tweet);  
+    // // console.log(JSON.stringify(tweet));
+    // return true;
   }
 
   IsLike(tweet: Tweet): boolean{

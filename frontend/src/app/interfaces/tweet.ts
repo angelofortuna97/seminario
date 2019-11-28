@@ -11,5 +11,6 @@ export interface Tweet {
     _author: User;
     _parent: String;
     _likes: Array<string>;
+    _favorites: Array<string>;
     count_likes: Number;
 }

@@ -6,12 +6,21 @@
     color: var(--ion-color-secondary);
 }
 
+#btn_fav{
+    margin-right: 10px;
+}
+
 .me {
     font-weight: bold;
     color: var(--ion-color-danger-tint);
 }
 
 #button_comment{
+    height: 35px;
+    width: 35px;
+}
+
+#button_heart{
     height: 35px;
     width: 35px;
 }
