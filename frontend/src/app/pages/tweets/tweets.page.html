@@ -27,11 +27,11 @@
   
         </ion-label>
         <ion-note slot="end">{{ tweet.created_at | unictDate: 1 }}</ion-note>
-        <ion-button slot="end" id="button_comment" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id)"><ion-icon name="text"></ion-icon></ion-button>
-        <ion-button slot="end" [color]="checkLike(tweet) ? 'danger' : 'light'" id="button_heart" shape="round" (click)="addLike(tweet)">
+        <ion-button slot="end" id="button_comment" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id); selectedIndex=i"><ion-icon name="text"></ion-icon></ion-button>
+        <ion-button slot="end" [color]="checkLike(tweet) ? 'danger' : 'light'" id="button_heart" shape="round" (click)="addLike(tweet); selectedIndex=i">
             <ion-icon [name]="checkLike(tweet) ? 'heart' : 'heart-empty'"></ion-icon>
           </ion-button>
-        <ion-button slot="end" [color]="checkFavorite(tweet) ? 'warning' : 'light'" id="button_heart" shape="round" (click)="addToFavorite(tweet)">
+        <ion-button slot="end" [color]="checkFavorite(tweet) ? 'warning' : 'light'" id="button_heart" shape="round" (click)="addToFavorite(tweet); selectedIndex=i">
             <ion-icon [name]="checkFavorite(tweet) ? 'star' : 'star-outline'"></ion-icon>
           </ion-button>
           <!-- <ion-badge>{{tweet.count_likes}}</ion-badge> -->
