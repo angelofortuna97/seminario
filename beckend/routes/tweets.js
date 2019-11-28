@@ -125,13 +125,17 @@ router.put('/:id/like', autenticationMiddleware.isAuth, function(req, res, next)
       })
     }
    
+    var flagForExit = false;
     tweet._likes.forEach(user => {
       if (user == res.locals.authInfo.userId){
+        flagForExit = true;
         return res.status(404).json({
         message: "Like exists"
         });
       }
     });
+    if (flagForExit)
+      return;
     tweet._likes.push(res.locals.authInfo.userId);
     tweet.count_likes += 1;
     tweet.save(function(err) {
@@ -155,16 +159,20 @@ router.delete('/:id/like', autenticationMiddleware.isAuth, function(req, res, ne
       })
     }
    
+    var flagForExit;
     tweet._likes.forEach(user => {
       if (user != res.locals.authInfo.userId){
+        flagForExit = true;
         return res.status(404).json({
         message: "Like doesn't exist"
         });
       }
     });
+    if (flagForExit)
+      return;
     tweet._likes.remove(res.locals.authInfo.userId);
     tweet.count_likes -= 1;
-    tweet.remove(function(err) {
+    tweet.save(function(err) {
       if(err) return res.status(500).json({error: err});
       res.json(tweet);
     });

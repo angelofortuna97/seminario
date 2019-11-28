@@ -1,0 +1,25 @@
+STORIA 1:
+
+aggiunto a entità Tweet:
+_parent     (objectId del tweet padre)
+
+GET /tweets/ 
+adesso ritorna solo i tweet principali
+
+ricavare i commenti di un tweet
+GET /tweets/:id/comments
+
+
+STORIA 2:
+
+aggiunti a entità Tweet:
+_likes      (array di objectId riferiti agli utenti che hanno messo like)
+count_likes     (contatore aggiornato lato backend)
+
+aggiungere like a un tweet:
+PUT /tweets/:id/like
+
+rimuovere like da un tweet:
+DELETE /tweets/:id/like
+
+
