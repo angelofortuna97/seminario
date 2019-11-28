@@ -169,6 +169,55 @@ export class TweetsPage implements OnInit {
 
   }
 
+  async addRemoveLike(tweet: Tweet){
+    try {
+
+      // Mostro il loader
+      await this.uniLoader.show();
+
+      // Rimuovo like se presente
+      if(this.IsLike(tweet))
+        await this.tweetsService.deleteLike(tweet);
+      
+      //Aggiungo like se non presente
+      else
+        await this.tweetsService.addLike(tweet);
+     
+      // Riaggiorno la mia lista di tweets
+      await this.getTweets();
+
+    } catch (err) {
+
+      // Nel caso la chiamata vada in errore, mostro l'errore in un toast
+      await this.toastService.show({
+        message: err.message,
+        type: ToastTypes.ERROR
+      });
+
+    }
+
+    // Chiudo il loader
+    await this.uniLoader.dismiss();
+
+  }
+
+  IsLike(tweet: Tweet): boolean{
+   
+    for(var i= 0; i<tweet._likes.length; ++i){
+      if(tweet._likes[i] == this.auth.me._id){
+        return true;
+      }
+    }
+    /*tweet._likes.forEach(function (value) {
+      console.log("value", value);
+      if(value == aut_id){
+      console.log(value == aut_id)
+      return true;
+    }
+    });*/
+    return false;
+  }
+
   canEdit(tweet: Tweet): boolean {
 
     // Controllo che l'autore del tweet coincida col mio utente

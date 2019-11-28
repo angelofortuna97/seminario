@@ -10,4 +10,6 @@ export interface Tweet {
     tweet: string;
     _author: User;
     _parent: String;
+    _likes: Array<string>;
+    count_likes: Number;
 }

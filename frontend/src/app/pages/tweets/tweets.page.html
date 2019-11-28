@@ -25,6 +25,8 @@
         </ion-label>
         <ion-note slot="end">{{ tweet.created_at | unictDate: 1 }}</ion-note>
         <ion-button slot="end" id="button_comment" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id)"><ion-icon name="text"></ion-icon></ion-button>
+        <ion-item (click)= "addRemoveLike(tweet)" ><ion-icon  name="heart" [class.heart] ="IsLike(tweet)"></ion-icon></ion-item>
+            <ion-note>{{tweet.count_likes}}</ion-note>
       </ion-item>
   
       <ion-item-options *ngIf="canEdit(tweet)" side="end">
