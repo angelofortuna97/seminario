@@ -25,8 +25,14 @@
         </ion-label>
         <ion-note slot="end">{{ tweet.created_at | unictDate: 1 }}</ion-note>
         <ion-button slot="end" id="button_comment" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id)"><ion-icon name="text"></ion-icon></ion-button>
-        <ion-item (click)= "addRemoveLike(tweet)" ><ion-icon  name="heart" [class.heart] ="IsLike(tweet)"></ion-icon></ion-item>
-            <ion-note>{{tweet.count_likes}}</ion-note>
+        <ion-button slot="end" color="danger" id="button_heart" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id)">
+            <ion-icon name="heart"></ion-icon>
+          </ion-button>
+        <ion-button slot="end" [color]="checkFavorite(tweet) ? 'warning' : 'light'" id="button_heart" shape="round" (click)="addToFavorite(tweet._id)">
+            <ion-icon [name]="checkFavorite(tweet) ? 'star' : 'star-outline'"></ion-icon>
+          </ion-button>
+          <!-- <ion-badge>{{tweet.count_likes}}</ion-badge> -->
+        <!-- <ion-item (click)= "addRemoveLike(tweet)" ><ion-icon  name="heart" [class.heart] ="IsLike(tweet)"></ion-icon></ion-item> -->
       </ion-item>
   
       <ion-item-options *ngIf="canEdit(tweet)" side="end">
@@ -40,8 +46,10 @@
     </ion-item-sliding>
     <!-- <ion-label *ngIf="selectedIndex == i" color="success">Prova</ion-label> -->
     <ion-list *ngIf="selectedIndex == i" id="commentList">
+      
       <ion-item *ngFor="let comment of comments"  color="light">
         <ion-label>
+           
           <h2>{{comment.tweet}}</h2>
   
           <p *ngIf="tweet._author; else userDeleted" class="user" [class.me]="canEdit(tweet)">
@@ -51,9 +59,11 @@
           <ng-template #userDeleted>
             <p class="user-deleted">User deleted</p>
           </ng-template>
-  
         </ion-label>
         <ion-note slot="end">{{ comment.created_at | unictDate: 1 }}</ion-note>
+        <ion-button slot="end" color="danger" id="button_heart" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id)">
+          <ion-icon name="heart"></ion-icon>
+        </ion-button>
       </ion-item>
     </ion-list>
   </ion-row>

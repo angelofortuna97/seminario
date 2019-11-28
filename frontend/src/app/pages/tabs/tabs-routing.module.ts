@@ -18,6 +18,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'favorites',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../favorites/favorites.module').then(m => m.FavoritesPageModule)
+          }
+        ]
+      },
+      {
         path: 'users',
         children: [
           {

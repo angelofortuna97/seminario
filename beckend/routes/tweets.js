@@ -39,20 +39,38 @@ router.get('/:id/comments', function(req, res, next) {
     });
 });
 
+// router.post('/',autenticationMiddleware.isAuth, [
+//   check('tweet').isString().isLength({min: 1, max: 120})
+// ], checkValidation, function(req, res, next) {
+//   const newTweet = new Tweet(req.body);
+
+//   const hashtags = newTweet.tweet.match(/(^|\s)(#[a-z\d-]+)/ig);
+  
+//   newTweet._author = res.locals.authInfo.userId;
+//   newTweet._parent = req.body._parent;
+//   newTweet._likes = [];
+
+//   hashtags.forEach(hashtag => {
+//     newTweet.hashtags.push(hashtag);
+//   });
+
+//   newTweet.count_likes = 0;
+//   newTweet.save(function(err){
+//     if(err) {
+//       return res.status(500).json({error: err});
+//     } 
+//     res.status(201).json(newTweet);
+//   });
+// });
+
 router.post('/',autenticationMiddleware.isAuth, [
   check('tweet').isString().isLength({min: 1, max: 120})
 ], checkValidation, function(req, res, next) {
   const newTweet = new Tweet(req.body);
-
-  const hashtags = newTweet.tweet.match(/(^|\s)(#[a-z\d-]+)/ig);
   
   newTweet._author = res.locals.authInfo.userId;
   newTweet._parent = req.body._parent;
   newTweet._likes = [];
-
-  hashtags.forEach(hashtag => {
-    newTweet.hashtags.push(hashtag);
-  });
 
   newTweet.count_likes = 0;
   newTweet.save(function(err){

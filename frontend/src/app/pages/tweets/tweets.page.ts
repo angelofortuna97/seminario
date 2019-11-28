@@ -181,7 +181,7 @@ export class TweetsPage implements OnInit {
       
       //Aggiungo like se non presente
       else
-        await this.tweetsService.addLike(tweet);
+        await this.tweetsService.addLike(tweet._id);
      
       // Riaggiorno la mia lista di tweets
       await this.getTweets();
@@ -199,6 +199,31 @@ export class TweetsPage implements OnInit {
     // Chiudo il loader
     await this.uniLoader.dismiss();
 
+  }
+
+  async addToFavorite(tweetId: string){
+
+    // Mostro il loader
+    await this.uniLoader.show();
+
+    console.log("tweetId: " + tweetId);
+    
+    await this.tweetsService.addToFav(tweetId);
+
+    await this.uniLoader.dismiss();
+
+    await this.getTweets();
+
+  }
+
+  checkFavorite(tweet: Tweet){
+    if(tweet._favorites.includes(this.auth.me._id)){
+      return true;
+    }
+    return false;
+    //   console.log("CheckFavorite: " + tweet._favorites.includes(this.auth.me._id) + " tweet: " + tweet.tweet);  
+    // // console.log(JSON.stringify(tweet));
+    // return true;
   }
 
   IsLike(tweet: Tweet): boolean{
