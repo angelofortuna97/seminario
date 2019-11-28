@@ -28,8 +28,8 @@
         </ion-label>
         <ion-note slot="end">{{ tweet.created_at | unictDate: 1 }}</ion-note>
         <ion-button slot="end" id="button_comment" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id)"><ion-icon name="text"></ion-icon></ion-button>
-        <ion-button slot="end" color="danger" id="button_heart" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id)">
-            <ion-icon name="heart"></ion-icon>
+        <ion-button slot="end" [color]="checkLike(tweet) ? 'danger' : 'light'" id="button_heart" shape="round" (click)="addLike(tweet)">
+            <ion-icon [name]="checkLike(tweet) ? 'heart' : 'heart-empty'"></ion-icon>
           </ion-button>
         <ion-button slot="end" [color]="checkFavorite(tweet) ? 'warning' : 'light'" id="button_heart" shape="round" (click)="addToFavorite(tweet)">
             <ion-icon [name]="checkFavorite(tweet) ? 'star' : 'star-outline'"></ion-icon>
@@ -64,9 +64,9 @@
           </ng-template>
         </ion-label>
         <ion-note slot="end">{{ comment.created_at | unictDate: 1 }}</ion-note>
-        <ion-button slot="end" color="danger" id="button_heart" shape="round" (click)="createOrEditTweet(2, undefined, tweet._id)">
-          <ion-icon name="heart"></ion-icon>
-        </ion-button>
+        <ion-button slot="end" [color]="checkLike(comment) ? 'danger' : 'light'" id="button_heart" shape="round" (click)="addLike(comment)">
+            <ion-icon [name]="checkLike(comment) ? 'heart' : 'heart-empty'"></ion-icon>
+          </ion-button>
       </ion-item>
     </ion-list>
   </ion-row>

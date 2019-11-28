@@ -83,6 +83,15 @@ export class TweetsService {
   //   }).toPromise();
   // }
 
+// async addLike(id: string){
+//   const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);
+//   return this.http.put<any>(`${environment.API_URL}/tweets/${id}/like`, null, {
+//     headers: headerOptions
+//   }).toPromise();
+// }
+
+
+//ADD LIKE
 async addLike(id: string){
   const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);
   return this.http.put<any>(`${environment.API_URL}/tweets/${id}/like`, null, {
@@ -90,8 +99,15 @@ async addLike(id: string){
   }).toPromise();
 }
 
-//FAVORITE
+//DELETE Like
+async delLike(id: string){
+  const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);
+  return this.http.delete<any>(`${environment.API_URL}/tweets/${id}/like`, {
+    headers: headerOptions
+  }).toPromise();
+}
 
+//ADD FAVORITE
 async addToFav(id: string){
   const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);
   return this.http.put<any>(`${environment.API_URL}/tweets/${id}/favorite`, null, {

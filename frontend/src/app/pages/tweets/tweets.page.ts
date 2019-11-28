@@ -18,6 +18,9 @@ export class TweetsPage implements OnInit {
   tweets: Tweet[] = [];
   comments: Tweet[] = [];
   showFavorite = false;
+  showLike = false;
+  actualId = null;
+  actualIndex = null;
 
   selectedIndex: number = null;
 
@@ -72,11 +75,27 @@ export class TweetsPage implements OnInit {
     }
   }
 
+  findLike(tweet: Tweet){
+    if(this.showFavorite){
+      if(tweet._likes.length > 0) return true;
+      else return false;
+    }else{
+      return true;
+    }
+  }
+
   setShowFavorite(){
     this.showFavorite = !this.showFavorite;
   }
 
+  setShowLike(){
+    this.showLike = !this.showLike;
+  }
+
   async getComment(id: string, index: number) {
+
+    this.actualId = id;
+    this.actualIndex = index;
 
     if(this.selectedIndex == index)
       this.selectedIndex = null;
@@ -182,36 +201,66 @@ export class TweetsPage implements OnInit {
 
   }
 
-  async addRemoveLike(tweet: Tweet){
-    try {
+  // // async addRemoveLike(tweet: Tweet){
+  // //   try {
 
-      // Mostro il loader
-      await this.uniLoader.show();
+  // //     // Mostro il loader
+  // //     await this.uniLoader.show();
 
-      // Rimuovo like se presente
-      if(this.IsLike(tweet))
-        await this.tweetsService.deleteLike(tweet);
+  // //     // Rimuovo like se presente
+  // //     if(this.IsLike(tweet))
+  // //       await this.tweetsService.deleteLike(tweet);
       
-      //Aggiungo like se non presente
-      else
-        await this.tweetsService.addLike(tweet._id);
+  // //     //Aggiungo like se non presente
+  // //     else
+  // //       await this.tweetsService.addLike(tweet._id);
      
-      // Riaggiorno la mia lista di tweets
-      await this.getTweets();
+  // //     // Riaggiorno la mia lista di tweets
+  // //     await this.getTweets();
 
-    } catch (err) {
+  // //   } catch (err) {
 
-      // Nel caso la chiamata vada in errore, mostro l'errore in un toast
-      await this.toastService.show({
-        message: err.message,
-        type: ToastTypes.ERROR
-      });
+  // //     // Nel caso la chiamata vada in errore, mostro l'errore in un toast
+  // //     await this.toastService.show({
+  // //       message: err.message,
+  // //       type: ToastTypes.ERROR
+  // //     });
 
-    }
+  // //   }
 
-    // Chiudo il loader
+  //   // Chiudo il loader
+  //   await this.uniLoader.dismiss();
+
+  // }
+
+
+  async addLike(tweet: Tweet){
+
+    // Mostro il loader
+    await this.uniLoader.show();
+
+    console.log("tweetId: " + tweet._id);
+    
+    if(!this.checkLike(tweet))
+      await this.tweetsService.addLike(tweet._id);
+    else await this.tweetsService.delLike(tweet._id);
     await this.uniLoader.dismiss();
 
+    if(tweet._parent != null || tweet._parent != undefined){
+      this.selectedIndex = null;
+      await this.getComment(this.actualId, this.actualIndex);
+    }else
+      await this.getTweets();
+  }
+
+  checkLike(tweet: Tweet){
+    if(tweet._likes.includes(this.auth.me._id)){
+      return true;
+    }
+    return false;
+    //   console.log("CheckFavorite: " + tweet._favorites.includes(this.auth.me._id) + " tweet: " + tweet.tweet);  
+    // // console.log(JSON.stringify(tweet));
+    // return true;
   }
 
   async addToFavorite(tweet: Tweet){
@@ -228,8 +277,6 @@ export class TweetsPage implements OnInit {
 
     await this.getTweets();
   }
-
-  
 
   checkFavorite(tweet: Tweet){
     if(tweet._favorites.includes(this.auth.me._id)){
