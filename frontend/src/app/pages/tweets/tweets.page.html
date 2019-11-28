@@ -8,11 +8,11 @@
 
   <ion-list>
 
-    <ion-item-sliding *ngFor="let tweet of tweets">
-      <ion-item>
+    <ion-row *ngFor="let tweet of tweets; index as i">
+    <ion-item-sliding >
+      <ion-item (click)="getComment(tweet._id, i);">
         <ion-label>
           <h2>{{tweet.tweet}}</h2>
-          <p>{{tweet._parent}}</p>
   
           <p *ngIf="tweet._author; else userDeleted" class="user" [class.me]="canEdit(tweet)">
             {{ getAuthor(tweet) }} 
@@ -36,6 +36,25 @@
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
+    <!-- <ion-label *ngIf="selectedIndex == i" color="success">Prova</ion-label> -->
+    <ion-list *ngIf="selectedIndex == i" id="commentList">
+      <ion-item *ngFor="let comment of comments"  color="light">
+        <ion-label>
+          <h2>{{comment.tweet}}</h2>
+  
+          <p *ngIf="tweet._author; else userDeleted" class="user" [class.me]="canEdit(tweet)">
+            {{ getAuthor(comment) }} 
+            <ion-icon *ngIf="canEdit(comment)" name="heart" color="danger-tint"></ion-icon> 
+          </p>
+          <ng-template #userDeleted>
+            <p class="user-deleted">User deleted</p>
+          </ng-template>
+  
+        </ion-label>
+        <ion-note slot="end">{{ comment.created_at | unictDate: 1 }}</ion-note>
+      </ion-item>
+    </ion-list>
+  </ion-row>
 
   </ion-list>
 
