@@ -138,6 +138,15 @@ async delFromFav(id: string){
     console.log(this.auth.me)
     console.log(this.auth.userToken);
     const headerOptions = this.httpOptions.headers.append('Authorization', `Bearer ${this.auth.userToken}`);
+    if(hashtag.includes('#')){
+      if(hashtag.length < 2) return;
+      else{
+      const query = hashtag.split('#')[1];
+      return this.http.get<Tweet[]>(`${environment.API_URL}/tweets/search/${query}`, {
+      headers: headerOptions
+    }).toPromise();
+      }
+    }
     return this.http.get<Tweet[]>(`${environment.API_URL}/tweets/search/${hashtag}`, {
       headers: headerOptions
     }).toPromise();
