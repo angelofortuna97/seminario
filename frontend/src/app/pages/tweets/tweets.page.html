@@ -10,7 +10,7 @@
 <ion-content>
 
   <ion-searchbar
-  (ionChange) = "inputChanged()"
+  (ionChange) = "inputChanged($event)"
   [(ngModel)]="searchQuery"></ion-searchbar>
 
   <ion-list *ngIf="getShowResults()">

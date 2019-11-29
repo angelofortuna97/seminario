@@ -103,16 +103,16 @@ export class TweetsPage implements OnInit {
     this.showLike = !this.showLike;
   }
 
- inputChanged(){
+ inputChanged(event){
     if (this.searchQuery == "" ) 
       this.showResults = false;
     else {
       this.showResults = true;
-      this.doSearch();
+      this.doSearch(event);
     }
   }
 
-  async doSearch(){
+  async doSearch(event){
     try {
       await this.uniLoader.show();
       this.searchResults = await this.tweetsService.doHashtagSearch(this.searchQuery);
@@ -124,6 +124,7 @@ export class TweetsPage implements OnInit {
       });
     }
     console.log(this.searchResults);
+    event.target.setFocus();
   }
   async getComment(id: string, index: number) {
 
