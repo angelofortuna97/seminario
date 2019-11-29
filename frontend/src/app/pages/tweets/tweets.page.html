@@ -9,7 +9,31 @@
 
 <ion-content>
 
-  <ion-list>
+  <ion-searchbar
+  (ionChange) = "inputChanged()"
+  [(ngModel)]="searchQuery"></ion-searchbar>
+
+  <ion-list *ngIf="getShowResults()">
+    <ion-row *ngFor="let tweet of getSearchResults(); index as i">
+      <ion-item-sliding *ngIf="findFav(tweet)">
+        <ion-item (click)="getComment(tweet._id, i);">
+          <ion-label>
+            <h2>{{tweet.tweet}}</h2>
+            <p *ngIf="tweet._author; else userDeleted" class="user" [class.me]="canEdit(tweet)">
+              {{ getAuthor(tweet) }} 
+              <ion-icon *ngIf="canEdit(tweet)" name="heart" color="danger-tint"></ion-icon> 
+            </p>
+            <ng-template #userDeleted>
+              <p class="user-deleted">User deleted</p>
+            </ng-template>
+          </ion-label>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-row>
+  </ion-list>
+
+
+  <ion-list *ngIf="!getShowResults()">
 
     <ion-row *ngFor="let tweet of tweets; index as i">
     <ion-item-sliding *ngIf="findFav(tweet)">

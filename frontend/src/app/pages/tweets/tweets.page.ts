@@ -21,6 +21,9 @@ export class TweetsPage implements OnInit {
   showLike = false;
   actualId = null;
   actualIndex = null;
+  showResults = false;
+  searchQuery = "";
+  searchResults: Tweet[]
 
   selectedIndex: number = null;
 
@@ -84,6 +87,14 @@ export class TweetsPage implements OnInit {
     }
   }
 
+  getShowResults(){
+    return this.showResults;
+  }
+
+  getSearchResults(){
+    return this.searchResults;
+  }
+
   setShowFavorite(){
     this.showFavorite = !this.showFavorite;
   }
@@ -92,6 +103,28 @@ export class TweetsPage implements OnInit {
     this.showLike = !this.showLike;
   }
 
+ inputChanged(){
+    if (this.searchQuery == "" ) 
+      this.showResults = false;
+    else {
+      this.showResults = true;
+      this.doSearch();
+    }
+  }
+
+  async doSearch(){
+    try {
+      await this.uniLoader.show();
+      this.searchResults = await this.tweetsService.doHashtagSearch(this.searchQuery);
+      await this.uniLoader.dismiss();
+    } catch (err) {
+      await this.toastService.show({
+        message: err.message,
+        type: ToastTypes.ERROR
+      });
+    }
+    console.log(this.searchResults);
+  }
   async getComment(id: string, index: number) {
 
     this.actualId = id;

@@ -71,6 +71,7 @@ router.post('/',autenticationMiddleware.isAuth, [
   newTweet._author = res.locals.authInfo.userId;
   newTweet._parent = req.body._parent;
   newTweet._likes = [];
+  const hashtags = newTweet.tweet.match(/(^|\s)(#[a-z\d-]+)/ig);
 
   if (hashtags != null){
     hashtags.forEach(hashtag => {
@@ -329,7 +330,9 @@ router.delete('/:id/favorite', autenticationMiddleware.isAuth, function(req, res
 });*/
 
 router.get('/search/:hashtag', function(req, res, next) {
-  Tweet.find().exec(function(err, tweets){
+  Tweet.find()
+  .populate("_author", "-password")
+  .exec(function(err, tweets){
       if (err) return res.status(500).json({error: err});      
 
       var tweetsWithHashtag = [];
@@ -338,7 +341,7 @@ router.get('/search/:hashtag', function(req, res, next) {
       tweets.forEach(tweet => {
         tweet.hashtags.forEach(hashtag => {
           tmp = " #" + req.params.hashtag.toString();
-          if (hashtag.toString() == tmp.toString() ){
+          if (hashtag.toString().includes(tmp.toString()) ){
             tweetsWithHashtag.push(tweet);
             return;
           }
