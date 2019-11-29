@@ -15,6 +15,14 @@
     color: var(--ion-color-danger-tint);
 }
 
+div{
+    ion-badge{
+        border-radius: 50px;
+        width: 20px;
+        height: 20px;
+    }
+}
+
 #button_comment{
     height: 35px;
     width: 35px;
